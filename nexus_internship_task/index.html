@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Platform</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> <!-- Icons -->
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+</head>
+<body>
+    <header id="header">
+        <h1 id="greeting"><i class="fas fa-rocket"></i> Welcome to Nexus! Let's collaborate. 😊</h1>
+        <button id="theme-toggle" aria-label="Toggle Dark Mode"><i class="fas fa-moon"></i> Dark Mode</button>
+        <nav id="nav" aria-label="Main Navigation">
+            <button onclick="showSection('dashboard')" aria-label="Go to Dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</button>
+            <button onclick="showSection('calendar')" aria-label="Go to Calendar"><i class="fas fa-calendar-alt"></i> Calendar</button>
+            <button onclick="showSection('video-call')" aria-label="Go to Video Call"><i class="fas fa-video"></i> Video Call</button>
+            <button onclick="showSection('documents')" aria-label="Go to Documents"><i class="fas fa-file-signature"></i> Documents</button>
+            <button onclick="showSection('payments')" aria-label="Go to Payments"><i class="fas fa-credit-card"></i> Payments</button>
+            <button onclick="logout()" aria-label="Logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Login Section -->
+        <section id="login" class="section active">
+            <div class="card">
+                <h2><i class="fas fa-sign-in-alt"></i> Login to Nexus</h2>
+                <form id="login-form">
+                    <input type="email" id="email" placeholder="Email" required aria-label="Email">
+                    <input type="password" id="password" placeholder="Password" required aria-label="Password">
+                    <div id="password-meter"><div></div></div>
+                    <button type="submit"><i class="fas fa-lock"></i> Login</button>
+                </form>
+                <div id="otp-section" style="display: none;">
+                    <p>Enter OTP sent to your email:</p>
+                    <input type="text" id="otp" placeholder="OTP" required aria-label="OTP">
+                    <button onclick="verifyOTP()"><i class="fas fa-check"></i> Verify</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section">
+            <div class="card">
+                <h2><i class="fas fa-home"></i> Hey there, welcome to your Dashboard!</h2>
+                <p>Collaborate with investors and entrepreneurs. We're here to help! 🚀</p>
+                <div class="container">
+                    <div class="stat"><i class="fas fa-wallet"></i> Wallet Balance: $<span id="balance">5000</span></div>
+                    <div class="stat"><i class="fas fa-calendar-check"></i> Recent Meetings: 3 confirmed</div>
+                </div>
+                <div id="tooltip" class="tooltip"><i class="fas fa-lightbulb"></i> Hover for tips! This is your hub.</div>
+            </div>
+        </section>
+
+        <!-- Calendar Section -->
+        <section id="calendar" class="section">
+            <div class="card">
+                <h2><i class="fas fa-calendar-alt"></i> Schedule Meetings – Let's make collaboration easy!</h2>
+                <p>Click a date to add a meeting.</p>
+                <div id="calendar-grid"></div>
+            </div>
+        </section>
+
+        <!-- Video Call Section -->
+        <section id="video-call" class="section">
+            <div class="card">
+                <h2><i class="fas fa-video"></i> Start a Video Call – Connect face-to-face!</h2>
+                <div id="call-ui">
+                    <button onclick="startCall()" class="btn-primary"><i class="fas fa-play"></i> Start Call</button>
+                </div>
+                <div id="in-call" style="display: none;">
+                    <p><i class="fas fa-camera"></i> Video feed placeholder (WebRTC mock). Say hi! 😊</p>
+                    <button onclick="endCall()" class="btn-danger"><i class="fas fa-stop"></i> End Call</button>
+                    <button onclick="toggleAudio()" class="btn-secondary"><i class="fas fa-microphone"></i> Toggle Audio</button>
+                    <button onclick="toggleVideo()" class="btn-secondary"><i class="fas fa-video-slash"></i> Toggle Video</button>
+                    <button onclick="shareScreen()" class="btn-secondary"><i class="fas fa-share-square"></i> Share Screen</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Document Chamber Section -->
+        <section id="documents" class="section">
+            <div class="card">
+                <h2><i class="fas fa-file-signature"></i> Document Chamber – Seal the deal!</h2>
+                <input type="file" id="doc-upload" accept=".pdf" aria-label="Upload Document">
+                <div id="doc-preview" class="preview"></div>
+                <p><i class="fas fa-pen"></i> Sign here:</p>
+                <canvas id="signature-pad" width="500" height="200" aria-label="Signature Pad"></canvas>
+                <button onclick="clearSignature()" class="btn-warning"><i class="fas fa-eraser"></i> Clear</button>
+                <button onclick="signDocument()" class="btn-success"><i class="fas fa-signature"></i> Sign Document</button>
+                <p>Status: <span id="doc-status" class="status">Draft</span></p>
+            </div>
+        </section>
+
+        <!-- Payments Section -->
+        <section id="payments" class="section">
+            <div class="card">
+                <h2><i class="fas fa-credit-card"></i> Payments – Fund your dreams!</h2>
+                <p class="balance">Balance: $<span id="pay-balance">5000</span></p>
+                <div class="actions">
+                    <button onclick="deposit()" class="btn-success"><i class="fas fa-plus"></i> Deposit</button>
+                    <button onclick="withdraw()" class="btn-danger"><i class="fas fa-minus"></i> Withdraw</button>
+                    <button onclick="transfer()" class="btn-primary"><i class="fas fa-exchange-alt"></i> Transfer</button>
+                </div>
+                <h3><i class="fas fa-history"></i> Transaction History</h3>
+                <table id="transactions" aria-label="Transaction History">
+                    <thead><tr><th>Amount</th><th>Sender</th><th>Receiver</th><th>Status</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p><i class="fas fa-heart"></i> Built with care for Nexus.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
